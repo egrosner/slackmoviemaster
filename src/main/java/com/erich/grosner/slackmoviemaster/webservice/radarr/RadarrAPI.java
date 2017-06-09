@@ -7,8 +7,6 @@ import feign.RequestLine;
 
 import java.util.List;
 
-import static com.sun.xml.internal.ws.api.message.Packet.Status.Request;
-
 /**
  * Created by egros on 6/7/2017.
  */
