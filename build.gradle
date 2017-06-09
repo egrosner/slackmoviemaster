@@ -1,0 +1,38 @@
+import org.gradle.api.tasks.Optional
+
+buildscript {
+	ext {
+		springBootVersion = '1.5.3.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	//compile('org.springframework.boot:spring-boot-starter-actuator')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('me.ramswaroop.jbot:jbot:3.0.2')
+    compile('org.projectlombok:lombok:1.16.16')
+    compile('io.github.openfeign:feign-core:9.5.0')
+    compile('io.github.openfeign:feign-jackson:9.5.0')
+	compile('com.google.guava:guava:22.0')
+	optional('org.springframework.boot:spring-boot-configuration-processor')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+compileJava.dependsOn(processResources)
