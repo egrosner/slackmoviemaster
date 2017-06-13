@@ -7,9 +7,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 
-import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -19,10 +21,11 @@ import java.util.List;
 public class ResponseConfig {
     @Bean
     public List<Response> getResponses() throws URISyntaxException, IOException {
-        File quotes = new ClassPathResource("terminator.json").getFile();
+        URI quotes = new ClassPathResource("terminator.json").getURI();
+        String contents = new String(Files.readAllBytes(Paths.get(quotes)));
 
         ObjectMapper om = new ObjectMapper();
-        List<Response> responses = om.readValue(quotes, TypeFactory.defaultInstance().constructCollectionType(List.class, Response.class));
+        List<Response> responses = om.readValue(contents, TypeFactory.defaultInstance().constructCollectionType(List.class, Response.class));
 
         return responses;
     }
