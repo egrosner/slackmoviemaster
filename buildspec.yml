@@ -16,5 +16,6 @@ phases:
       - echo Build completed on `date`
 artifacts:
   files:
-    - '*/slackmoviemaster-1.0.jar'
+    - 'slackmoviemaster-1.0.jar'
   discard-paths: yes
+  base-directory: 'target'
