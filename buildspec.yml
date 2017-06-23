@@ -6,7 +6,6 @@ phases:
       - echo Nothing to do in the install phase...
   pre_build:
     commands:
-      - echo what
       - sudo chmod +x gradlew
   build:
     commands:
@@ -15,9 +14,8 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
-      - cd target && ls -la
 artifacts:
   files:
     - 'slackmoviemaster-1.0.jar'
   discard-paths: yes
-  base-directory: 'target'
+  base-directory: 'build/libs'

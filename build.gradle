@@ -19,7 +19,6 @@ apply plugin: 'com.google.cloud.tools.appengine'
 jar.baseName = 'slackmoviemaster'
 version = '1.0'
 sourceCompatibility = 1.8
-this.libsDirName = '../target'
 
 repositories {
 	mavenCentral()
