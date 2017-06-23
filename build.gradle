@@ -16,8 +16,9 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'com.google.cloud.tools.appengine'
 
-version = '0.0.1-SNAPSHOT'
+version = '1.0'
 sourceCompatibility = 1.8
+this.libsDirName = '../target'
 
 repositories {
 	mavenCentral()

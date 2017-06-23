@@ -10,10 +10,10 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - gradle build -x test
+      - gradle build
   post_build:
     commands:
       - echo Build completed on `date`
 artifacts:
   files:
-    - build/libs/slackmoviemaster-0.0.1-SNAPSHOT.jar
+    - build/libs/slackmoviemaster-1.0.jar
