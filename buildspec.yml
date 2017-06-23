@@ -7,10 +7,11 @@ phases:
   pre_build:
     commands:
       - echo what
+      - sudo chmod +x gradlew
   build:
     commands:
       - echo Build started on `date`
-      - gradle build
+      - ./gradlew build
   post_build:
     commands:
       - echo Build completed on `date`
