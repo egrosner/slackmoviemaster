@@ -19,6 +19,7 @@ public class WebController {
     @PostMapping
     public String receive(JsonNode json) {
 
+        System.out.println(json.toString());
 
         return "OK";
     }
