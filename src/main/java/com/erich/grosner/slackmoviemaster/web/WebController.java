@@ -17,9 +17,7 @@ public class WebController {
 
     //intercept from radarr / sonarr
     @PostMapping
-    public String receive(@RequestBody String json) {
-
-        System.out.println(json.toString());
+    public String receive(@RequestBody SonarrRequest sonarrRequest) {
 
         return "OK";
     }
