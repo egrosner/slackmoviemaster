@@ -1,8 +1,8 @@
 package com.erich.grosner.slackmoviemaster.web;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -17,7 +17,7 @@ public class WebController {
 
     //intercept from radarr / sonarr
     @PostMapping
-    public String receive(ObjectNode json) {
+    public String receive(@RequestBody String json) {
 
         System.out.println(json.toString());
 
