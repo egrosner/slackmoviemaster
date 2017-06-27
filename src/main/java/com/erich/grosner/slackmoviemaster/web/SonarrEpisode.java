@@ -1,5 +1,6 @@
 package com.erich.grosner.slackmoviemaster.web;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -20,6 +21,7 @@ public class SonarrEpisode {
     @JsonProperty("Title")
     private String title;
     @JsonProperty("AirDate")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "EST")
     private LocalDate airDate;
     @JsonProperty("AirDateUtc")
     private LocalDateTime airDateUtc;

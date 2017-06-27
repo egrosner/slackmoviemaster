@@ -5,7 +5,6 @@ import com.erich.grosner.slackmoviemaster.properties.RadarrProperties;
 import com.erich.grosner.slackmoviemaster.properties.SlackBotProperties;
 import com.erich.grosner.slackmoviemaster.webservice.radarr.Movie;
 import com.erich.grosner.slackmoviemaster.webservice.radarr.RadarrAPI;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Strings;
 import lombok.RequiredArgsConstructor;
 import me.ramswaroop.jbot.core.slack.Bot;
@@ -44,7 +43,7 @@ public class SlackBot extends Bot {
         return this;
     }
 
-    @Controller(events = {EventType.DIRECT_MENTION, EventType.DIRECT_MESSAGE})
+    @Controller(events = {EventType.DIRECT_MENTION})
     public void onDirectMention(WebSocketSession session, Event event) throws URISyntaxException {
         String imdbId = "";
         String imdbUrl = "";
@@ -81,7 +80,7 @@ public class SlackBot extends Bot {
         firstResult.setMonitored(true);
         firstResult.getAddOptions().setSearchForMovie(true);
 
-        JsonNode result = radarAPI.addMovie(firstResult, radarrProperties.getKey());
+        //JsonNode result = radarAPI.addMovie(firstResult, radarrProperties.getKey());
 
         reply(session, event, new Message(String.format("Acquiring target: %s (%s).",
                 firstResult.getTitle(),

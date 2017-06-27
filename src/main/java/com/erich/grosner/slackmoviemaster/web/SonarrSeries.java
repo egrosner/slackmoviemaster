@@ -10,7 +10,7 @@ import lombok.Data;
 public class SonarrSeries {
     @JsonProperty("Id")
     private int id;
-    @JsonProperty("Id")
+    @JsonProperty("Title")
     private String title;
     @JsonProperty("Path")
     private String path;
