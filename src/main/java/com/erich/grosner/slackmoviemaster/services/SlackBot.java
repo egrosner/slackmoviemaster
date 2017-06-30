@@ -43,6 +43,11 @@ public class SlackBot extends Bot {
         return this;
     }
 
+
+    public void sendMessage() {
+
+    }
+
     @Controller(events = {EventType.DIRECT_MENTION})
     public void onDirectMention(WebSocketSession session, Event event) throws URISyntaxException {
         String imdbId = "";

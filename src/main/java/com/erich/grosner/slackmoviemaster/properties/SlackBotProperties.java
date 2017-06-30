@@ -13,4 +13,6 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class SlackBotProperties {
     private String token;
+    private String webhookUrl;
+    private String webhookToken;
 }
