@@ -5,6 +5,7 @@ import com.erich.grosner.slackmoviemaster.web.WebController;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,7 @@ public class SlackmoviemasterApplicationTests {
     private WebController webController;
 
 	@Test
+	@Ignore
 	public void contextLoads() throws IOException {
 		ObjectMapper om = new ObjectMapper();
 		om.configure(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE, true);
