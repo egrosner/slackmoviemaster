@@ -45,7 +45,7 @@ public class WebController {
     @PostMapping("/sonarr")
     public String receiveFromSonarr(@RequestBody SonarrRequest sonarrRequest) {
         //what event type is it?
-        if(sonarrRequest.getEventType() != SonarrEventType.DOWNLOAD && sonarrRequest.getEventType() != SonarrEventType.TEST) {
+        if(sonarrRequest.getEventType() != SonarrEventType.DOWNLOAD) {
             //do nothing for now
             return "OK";
         }
