@@ -1,9 +1,9 @@
 package com.erich.grosner.slackmoviemaster.web;
 
 import com.erich.grosner.slackmoviemaster.properties.SlackBotProperties;
-import com.erich.grosner.slackmoviemaster.properties.TMDBProperties;
 import com.erich.grosner.slackmoviemaster.webservice.slack.SlackWebHook;
-import com.erich.grosner.slackmoviemaster.webservice.tmdb.*;
+import com.erich.grosner.slackmoviemaster.webservice.tvdb.*;
+import com.google.common.collect.ImmutableMap;
 import me.ramswaroop.jbot.core.slack.models.Attachment;
 import me.ramswaroop.jbot.core.slack.models.RichMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class WebController {
 
     @Autowired
-    private TMDBApi tmdbApi;
+    private TVDBApi tvdbApi;
 
     @Autowired
-    private TMDBProperties tmdbProperties;
+    private TVDBApiProperties tvdbApiProperties;
 
     @Autowired
     private SlackWebHook slackWebHook;
@@ -50,29 +50,40 @@ public class WebController {
             return "OK";
         }
 
-        //find tmdb information
-        TMDBFindResponse searchResults = tmdbApi.find(sonarrRequest.getSeries().getTvdbId() + "", ExternalSource.TVDB_ID, tmdbProperties.getKey());
+        LoginResponse token = tvdbApi.login(LoginRequest.builder()
+                .apikey(tvdbApiProperties.getKey())
+                .userkey(tvdbApiProperties.getUserkey())
+                .username(tvdbApiProperties.getUsername())
+                .build());
 
-        TMDBFindTvResult firstTvResult = searchResults.getTvResults().get(0);
-        String tmdbTvId = firstTvResult.getId() + "";
+        String tvdbId = sonarrRequest.getSeries().getTvdbId() + "";
         String seasonNumber = sonarrRequest.getEpisodes().get(0).getSeasonNumber() + "";
         String episodeNumber = sonarrRequest.getEpisodes().get(0).getEpisodeNumber() + "";
 
-        TMDBSeasonEpisodeResponse episodeInfo = tmdbApi.getSeasonEpisode(tmdbTvId, seasonNumber, episodeNumber, tmdbProperties.getKey());
+        SeriesResponse seriesResponse = tvdbApi.series(tvdbId, token.getToken());
+        SeriesEpisodesResponse seriesEpisodesResponse = tvdbApi.queryBySeasonEpisode(tvdbId, ImmutableMap.of(
+                SeriesEpisodeHeaders.AIRED_SEASON.getName(), seasonNumber,
+                SeriesEpisodeHeaders.AIRED_EPISODE.getName(), episodeNumber
+        ), token.getToken());
+
+        BasicEpisode firstResult = seriesEpisodesResponse.getData().get(0);
+
+        //get the full episode info
+        EpisodeResponse episodeResponse = tvdbApi.queryByEpisodeId(firstResult.getId() + "", token.getToken());
 
         //build slack message
-        RichMessage message = new RichMessage(firstTvResult.getName() +
+        RichMessage message = new RichMessage(seriesResponse.getData().getSeriesName() +
                 " S" + seasonNumber +
                 "E" + episodeNumber +
                 " was added to plex");
 
         Attachment messageAttachment = new Attachment();
-        messageAttachment.setTitle(episodeInfo.getName());
+        messageAttachment.setTitle(firstResult.getEpisodeName());
         messageAttachment.setColor("#36a64f");
         messageAttachment.setTitleLink("http://www.google.com");
-        messageAttachment.setText(episodeInfo.getOverview());
-        messageAttachment.setImageUrl("http://image.tmdb.org/t/p/w300" + episodeInfo.getStillPath());
-        messageAttachment.setThumbUrl("http://image.tmdb.org/t/p/w92" + firstTvResult.getPosterPath());
+        messageAttachment.setText(firstResult.getOverview());
+        messageAttachment.setImageUrl("https://www.thetvdb.com/banners/" + episodeResponse.getData().getFilename());
+        messageAttachment.setThumbUrl("https://www.thetvdb.com/banners/" + seriesResponse.getData().getBanner());
 
         message.setAttachments(new Attachment[] { messageAttachment });
 
