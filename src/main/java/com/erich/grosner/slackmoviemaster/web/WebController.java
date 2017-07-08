@@ -4,6 +4,7 @@ import com.erich.grosner.slackmoviemaster.properties.SlackBotProperties;
 import com.erich.grosner.slackmoviemaster.webservice.slack.SlackWebHook;
 import com.erich.grosner.slackmoviemaster.webservice.tvdb.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import lombok.extern.apachecommons.CommonsLog;
@@ -49,12 +50,19 @@ public class WebController {
         return "OK";
     }
 
+    @PostMapping("/sonarr/v2")
+    public String receiveFromSonarrTest(@RequestBody JsonNode sonarrRequest) {
+        log.info("[REQ]: " + sonarrRequest.toString());
+
+        return "OK";
+    }
+
     @PostMapping("/sonarr")
     public String receiveFromSonarr(@RequestBody SonarrRequest sonarrRequest) throws JsonProcessingException {
         log.info("[REQ]: " + objectMapper.writeValueAsString(sonarrRequest));
 
         //what event type is it?
-        if(sonarrRequest.getEventType() != SonarrEventType.DOWNLOAD) {
+        if(sonarrRequest.getEventType() != SonarrEventType.DOWNLOAD && sonarrRequest.getEventType() != SonarrEventType.GRAB) {
             //do nothing for now
             return "OK";
         }

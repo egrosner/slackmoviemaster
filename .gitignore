@@ -15,6 +15,7 @@
 *.iws
 *.iml
 *.ipr
+/src/test/resources/application.properties
 
 ### NetBeans ###
 nbproject/private/
