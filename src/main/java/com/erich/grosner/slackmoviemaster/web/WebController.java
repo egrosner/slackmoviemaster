@@ -3,7 +3,10 @@ package com.erich.grosner.slackmoviemaster.web;
 import com.erich.grosner.slackmoviemaster.properties.SlackBotProperties;
 import com.erich.grosner.slackmoviemaster.webservice.slack.SlackWebHook;
 import com.erich.grosner.slackmoviemaster.webservice.tvdb.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
+import lombok.extern.apachecommons.CommonsLog;
 import me.ramswaroop.jbot.core.slack.models.Attachment;
 import me.ramswaroop.jbot.core.slack.models.RichMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Created by egros on 6/8/2017.
  */
+@CommonsLog
 @RestController
 public class WebController {
 
@@ -30,6 +34,9 @@ public class WebController {
     @Autowired
     private SlackBotProperties slackBotProperties;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @GetMapping
     public String start() {
         return "booting up...";
@@ -43,7 +50,9 @@ public class WebController {
     }
 
     @PostMapping("/sonarr")
-    public String receiveFromSonarr(@RequestBody SonarrRequest sonarrRequest) {
+    public String receiveFromSonarr(@RequestBody SonarrRequest sonarrRequest) throws JsonProcessingException {
+        log.info("[REQ]: " + objectMapper.writeValueAsString(sonarrRequest));
+
         //what event type is it?
         if(sonarrRequest.getEventType() != SonarrEventType.DOWNLOAD) {
             //do nothing for now

@@ -3,9 +3,12 @@ package com.erich.grosner.slackmoviemaster.services;
 import com.erich.grosner.slackmoviemaster.model.Response;
 import com.erich.grosner.slackmoviemaster.properties.RadarrProperties;
 import com.erich.grosner.slackmoviemaster.properties.SlackBotProperties;
+import com.erich.grosner.slackmoviemaster.properties.TMDBProperties;
 import com.erich.grosner.slackmoviemaster.webservice.radarr.Movie;
 import com.erich.grosner.slackmoviemaster.webservice.radarr.RadarrAPI;
+import com.erich.grosner.slackmoviemaster.webservice.tmdb.TMDBApi;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import me.ramswaroop.jbot.core.slack.Bot;
 import me.ramswaroop.jbot.core.slack.Controller;
@@ -32,6 +35,8 @@ public class SlackBot extends Bot {
     private final RadarrProperties radarrProperties;
     private final RadarrAPI radarAPI;
     private final List<Response> responses;
+    private final TMDBApi tmdbApi;
+    private final TMDBProperties tmdbProperties;
 
     @Override
     public String getSlackToken() {
@@ -70,7 +75,25 @@ public class SlackBot extends Bot {
         }
 
         if (Strings.isNullOrEmpty(imdbId)) {
-            reply(session, event, new Message(Response.randomResponse(responses)));
+            //if we still haven't found an id, perhaps this is a title query?
+
+            //does it start with the words in this list?
+            List<String> searchingKeywords = Lists.newArrayList(
+                    "search for",
+                    "find me",
+                    "find",
+                    "search"
+            );
+
+            if(searchingKeywords.stream().anyMatch(s -> event.getText().startsWith(s))) {
+                //take the rest of it and search for that movie
+                //String removable = searchingKeywords.stream().filter(s -> event.getText().startsWith(s)).findFirst().get();
+
+                //String titleResult = event.getText().replace(removable, "");
+
+                reply(session, event, new Message(Response.randomResponse(responses)));
+            }
+
             return;
         }
 

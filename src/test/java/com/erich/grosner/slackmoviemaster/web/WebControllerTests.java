@@ -1,7 +1,5 @@
-package com.erich.grosner.slackmoviemaster;
+package com.erich.grosner.slackmoviemaster.web;
 
-import com.erich.grosner.slackmoviemaster.web.SonarrRequest;
-import com.erich.grosner.slackmoviemaster.web.WebController;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -16,7 +14,7 @@ import java.io.IOException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SlackmoviemasterApplicationTests {
+public class WebControllerTests {
 
 	String jsonRequest = "{\n" +
 			"    \"EventType\": \"Download\",\n" +
@@ -47,7 +45,7 @@ public class SlackmoviemasterApplicationTests {
 
 	@Test
 	@Ignore
-	public void contextLoads() throws IOException {
+	public void receiveFromSonarr_shouldPostToSlackChannel() throws IOException {
 		ObjectMapper om = new ObjectMapper();
 		om.configure(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE, true);
         om.registerModule(new JavaTimeModule());
