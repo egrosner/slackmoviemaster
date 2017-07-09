@@ -92,7 +92,7 @@ public class WebController {
         RichMessage message = new RichMessage(seriesResponse.getData().getSeriesName() +
                 " S" + seasonNumber +
                 "E" + episodeNumber +
-                " was added to plex");
+                " was grabbed.");
 
         Attachment messageAttachment = new Attachment();
         messageAttachment.setTitle(firstResult.getEpisodeName());

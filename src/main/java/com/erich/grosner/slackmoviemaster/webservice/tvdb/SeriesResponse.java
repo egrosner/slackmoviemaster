@@ -38,7 +38,7 @@ public class SeriesResponse {
         private String rating;
         private String runtime;
         @JsonProperty("seriesId")
-        private int seriesId;
+        private String seriesId;
         @JsonProperty("seriesName")
         private String seriesName;
         @JsonProperty("siteRating")
